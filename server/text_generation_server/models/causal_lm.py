@@ -583,6 +583,11 @@ class CausalLM(Model):
         # slice the attention mask to the correct shape
         attention_mask = batch.attention_mask[:, : -batch.padding_right_offset]
 
+        import pickle
+        with open("inps.txt", "a") as f:
+            f.write(repr(self.tokenizer.decode(batch.input_ids[0])) + '\n')
+        # raise ZeroDivisionError(f"Zero Division Error {len(batch.input_ids)}")
+
         logits, speculative_logits, past = self.forward(
             batch.input_ids,
             attention_mask,
